@@ -143,8 +143,9 @@ make_path_col <- function(paths, show_y_title = TRUE) {
       axis.text.y = element_text(size = 24),
       axis.title = element_text(size = 24),
       strip.text = element_text(size = 24),
-      strip.background = element_rect(fill = "gray85", color = "gray50"),
-      panel.border = element_rect(color = "gray50", fill = NA, linewidth = .5)
+      axis.line = element_blank(),
+      strip.background = element_rect(fill = "gray85", color = "black", linewidth = .5),
+      panel.border = element_rect(color = "black", fill = NA, linewidth = .5)
     )
 
   list(plot = plot, height = n_panels * panel_height)

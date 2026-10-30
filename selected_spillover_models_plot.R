@@ -97,6 +97,38 @@ selected_models_path_plot <- ggplot(
     panel.spacing = grid::unit(.12, "lines")
   )
 
+selected_spillover_3x3_plot <- ggplot(
+  selected_models_plot_data %>% filter(model == "M_spill_direct"),
+  aes(x = year_num, y = beta, color = Path, group = Path)
+) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray55", linewidth = .7) +
+  geom_ribbon(
+    aes(ymin = ci_low, ymax = ci_high, fill = Path),
+    alpha = .12, color = NA
+  ) +
+  geom_line(linewidth = 1.6) +
+  geom_point(aes(shape = significant), size = 4.8, stroke = 1.6, fill = "white") +
+  facet_wrap(~ Path, ncol = 3, drop = FALSE) +
+  scale_x_continuous(breaks = 2021:2023, limits = c(2020.65, 2023.35)) +
+  scale_color_manual(values = selected_path_colors, guide = "none") +
+  scale_fill_manual(values = selected_path_colors, guide = "none") +
+  scale_shape_manual(
+    values = c(`TRUE` = 16, `FALSE` = 21),
+    labels = c(`TRUE` = "p < .05", `FALSE` = "Not significant"),
+    name = NULL
+  ) +
+  labs(title = NULL, subtitle = NULL, x = "Year", y = "Standardized path\ncoefficient") +
+  theme_classic(base_size = 27) +
+  theme(
+    axis.text.x = element_text(angle = 90, vjust = .5, hjust = 1),
+    strip.text.x = element_text(size = 24),
+    strip.background = element_rect(fill = "gray92", color = "black", linewidth = 1),
+    axis.line = element_blank(),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    legend.position = "bottom",
+    panel.spacing = grid::unit(.12, "lines")
+  )
+
 write.csv(
   selected_models_plot_data %>%
     select(year, model, Model, path, Path, beta, se, ci_low, ci_high, p_value, sig),
@@ -111,5 +143,14 @@ ggsave(
   file.path(out_dir, "selected_spillover_models_path_trends.png"),
   selected_models_path_plot, width = 28, height = 10, dpi = 300
 )
+ggsave(
+  file.path(out_dir, "selected_spillover_models_path_trends_3x3.pdf"),
+  selected_spillover_3x3_plot, width = 14, height = 14
+)
+ggsave(
+  file.path(out_dir, "selected_spillover_models_path_trends_3x3.png"),
+  selected_spillover_3x3_plot, width = 14, height = 14, dpi = 300
+)
 
 cat("Saved: selected_spillover_models_path_trends.pdf / .png\n")
+cat("Saved: selected_spillover_models_path_trends_3x3.pdf / .png\n")
