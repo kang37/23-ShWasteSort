@@ -87,7 +87,7 @@ height_unit <- 1.35
 panel_height <- diff(global_ylim) * height_unit
 fill_values <- c(path_colors, ns = "white")
 
-make_path_col <- function(paths, show_y_title = TRUE) {
+make_path_col <- function(paths, show_y_title = TRUE, show_x_title = TRUE) {
   d <- plot_data %>%
     filter(Path_full %in% paths) %>%
     mutate(Path_full = factor(Path_full, levels = paths))
@@ -136,7 +136,10 @@ make_path_col <- function(paths, show_y_title = TRUE) {
     scale_x_continuous(breaks = 2019:2023) +
     scale_color_manual(values = path_colors, guide = "none") +
     scale_fill_manual(values = fill_values, guide = "none") +
-    labs(x = "Year", y = if (show_y_title) "Standardized Coefficient" else NULL) +
+    labs(
+      x = if (show_x_title) "Year" else NULL,
+      y = if (show_y_title) "Standardized Coefficient" else NULL
+    ) +
     theme_classic(base_size = 24) +
     theme(
       axis.text.x = element_text(size = 24, angle = 90),
@@ -152,9 +155,16 @@ make_path_col <- function(paths, show_y_title = TRUE) {
 }
 
 columns <- list(
-  make_path_col(c("Subjective norm → Attitude", "Subjective norm → PBC", "PBC → Attitude")),
+  make_path_col(
+    c("Subjective norm → Attitude", "Subjective norm → PBC", "PBC → Attitude"),
+    show_x_title = FALSE
+  ),
   make_path_col(c("Subjective norm → Intention", "PBC → Intention", "Attitude → Intention"), FALSE),
-  make_path_col(c("Intention → Behavior", "PBC → Behavior"), FALSE)
+  make_path_col(
+    c("Intention → Behavior", "PBC → Behavior"),
+    show_y_title = FALSE,
+    show_x_title = FALSE
+  )
 )
 
 for (i in seq_along(columns)) {
