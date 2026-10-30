@@ -122,11 +122,11 @@ selected_spillover_3x3_plot <- ggplot(
   theme(
     axis.text.x = element_text(angle = 90, vjust = .5, hjust = 1),
     strip.text.x = element_text(size = 24),
-    strip.background = element_rect(fill = "gray92", color = "black", linewidth = 1),
+    strip.background = element_rect(fill = "gray92", color = "black", linewidth = .5),
     axis.line = element_blank(),
-    panel.border = element_rect(color = "black", fill = NA, linewidth = 1),
+    panel.border = element_rect(color = "black", fill = NA, linewidth = .5),
     legend.position = "bottom",
-    panel.spacing = grid::unit(.12, "lines")
+    panel.spacing = grid::unit(.6, "lines")
   )
 
 write.csv(
